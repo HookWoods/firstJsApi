@@ -7,7 +7,7 @@ module.exports = {
             const getCrud = model.getDomain(domainName)
             res.send(getCrud)
         } else {
-            res.send("error while trying to create the domain")
+            res.send("set a link")
         }
     },
 
