@@ -3,7 +3,7 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const compression = require('compression')
-const utils = require('./utils/utils')
+const utils = require('./helper/utils')
 
 const domainRouter = require('./routes/api');
 
@@ -16,11 +16,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(compression())
 
-for (let url of utils.getRouterJson()) {
-    utils.getCache().put(url, "")
-}
+utils.getRouterJson().forEach(url => utils.getCache().put(url, ""))
 
 app.use('/', domainRouter);
+
+app.listen(3000, () => {
+    console.log("Example app listening at http://localhost:${port}")
+})
 
 
 module.exports = app;

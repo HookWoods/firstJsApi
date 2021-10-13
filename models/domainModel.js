@@ -1,7 +1,13 @@
-const utils = require("../utils/utils")
+const utils = require("../helper/utils")
+const axios = require("axios");
+
+const pattern = new RegExp('^(https?:\\/\\/)?((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}' +
+    '|((\\d{1,3}\\.){3}\\d{1,3}))(\:\\d+)?(\\/[-a-z\\d%_.~+]*)*(\\?[;&a-z\\d%_.~+=-]*)' +
+    '?(\#[-a-z\\d_]*)?$', 'i').compile();
+
 module.exports = {
 
-    getDomain: function (domainName) {
+    getDomain: (domainName) => {
         if (utils.getCache().has(domainName)) {
             return "The url exist: " + domainName;
         } else {
@@ -9,10 +15,10 @@ module.exports = {
         }
     },
 
-    createDomain: function (domainName) {
+    createDomain: (domainName) => {
         if (!utils.getCache().has(domainName)) {
-            if (utils.isValidURL(domainName)) {
-                if (utils.isSiteWorking(domainName)) {
+            if (isValidURL(domainName)) {
+                if (isSiteWorking(domainName)) {
                     utils.getCache().put(domainName, "")
 
                     let json = utils.getRouterJson();
@@ -28,10 +34,10 @@ module.exports = {
         return "Error, the domain already exists in the router!"
     },
 
-    updateDomain: function (domainName, newDomain) {
+    updateDomain: (domainName, newDomain) => {
         if (utils.getCache().has(domainName)) {
-            if (utils.isValidURL(domainName)) {
-                if (utils.isSiteWorking(domainName)) {
+            if (isValidURL(domainName)) {
+                if (isSiteWorking(domainName)) {
                     utils.getCache().del(domainName)
                     utils.getCache().put(newDomain, "")
 
@@ -53,7 +59,7 @@ module.exports = {
         }
     },
 
-    deleteDomain: function (domainName) {
+    deleteDomain: (domainName) => {
         if (utils.getCache().has(domainName)) {
             utils.getCache().del(domainName)
 
@@ -71,7 +77,21 @@ module.exports = {
         }
     },
 
-    listDomain: function () {
-        return utils.getCache().exportJson();
-    }
+    listDomain: () => utils.getCache().exportJson()
+
+}
+
+function isValidURL(string) {
+    return pattern.test(string)
+}
+
+function isSiteWorking(site) {
+    let working = false
+    axios.get(site).then(function (response) {
+        if (!response.request) {
+            working = true
+        }
+    });
+
+    return working
 }

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const controller = require('../controllers/domain-controller')
+const controller = require('../controllers/domainController')
 
 router.get('/', (req, res) => controller.listDomains(req, res))
 router.get('/domains', (req, res) => controller.getDomain(req, res))
