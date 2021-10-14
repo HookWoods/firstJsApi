@@ -20,7 +20,8 @@ utils.getRouterJson().forEach(url => utils.getCache().put(url, ""))
 
 app.use('/', domainRouter);
 
-app.listen(3000, () => {
+const port = 3000;
+app.listen(port, () => {
     console.log("Example app listening at http://localhost:${port}")
 })
 
