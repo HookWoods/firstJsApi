@@ -55,7 +55,7 @@ module.exports = {
             }
             return "Error, this site doesn't pass the regex test !"
         } else {
-            return "Error, this domain is not yet registered!"
+            return "Error, this domain is not yet registered !"
         }
     },
 

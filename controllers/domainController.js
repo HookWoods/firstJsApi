@@ -1,6 +1,4 @@
 const model = require('../models/domainModel')
-const utils = require("../helper/utils")
-
 module.exports = {
     getDomain: (req, res) => {
         const domainName = req.query.domain
